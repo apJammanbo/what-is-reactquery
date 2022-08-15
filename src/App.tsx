@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ChakraProvider } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RootBox from "./components/layouts/RootBox";
+import Home from "./pages/Home";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Queries from "./pages/Queris";
 
-function App() {
+const queryClient = new QueryClient();
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider resetCSS={true}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={true} />
+        <BrowserRouter>
+          <RootBox>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/queries" element={<Queries />} />
+            </Routes>
+          </RootBox>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ChakraProvider>
   );
-}
+};
 
 export default App;
